@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TKEHub — Guía</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #FFD700;
+  --bg-dark: #0D0F1A;
+  --bg-card: #161926;
+  --bg-card2: #1E2235;
+  --bg-surface: #252A42;
+  --text-main: #F0F2FF;
+  --text-muted: #8892B0;
+  --border: rgba(255,255,255,0.08);
+  --font-display: 'Lilita One', cursive;
+  --font-body: 'Nunito', sans-serif;
+  --accent: #7B61FF;
+  --accent2: #FF6B35;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg-dark); color: var(--text-main); }
+
+/* HEADER */
+.guide-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(13,15,26,0.95); backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px; height: 60px;
+}
+.guide-logo { font-family: var(--font-display); font-size: 20px; color: var(--primary); text-decoration: none; text-shadow: 0 0 16px rgba(255,215,0,0.4); }
+.guide-header-links { display: flex; gap: 12px; align-items: center; }
+.guide-header-links a { color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 8px; transition: all 0.2s; }
+.guide-header-links a:hover { color: var(--primary); background: rgba(255,215,0,0.08); }
+.guide-header-links .btn-back { background: var(--bg-surface); border: 1px solid var(--border); color: var(--text-main); }
+
+/* LAYOUT */
+.guide-layout { display: flex; min-height: 100vh; padding-top: 60px; }
+
+/* SIDEBAR */
+.guide-sidebar {
+  width: 260px; flex-shrink: 0;
+  padding: 28px 20px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  position: fixed; top: 60px; bottom: 0; left: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.guide-sidebar::-webkit-scrollbar { width: 3px; }
+.guide-sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+.sidebar-category { margin-bottom: 24px; }
+.sidebar-category-label {
+  font-size: 10px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px;
+}
+.sidebar-links { border-left: 2px solid var(--border); padding-left: 12px; }
+.sidebar-links a {
+  display: block; padding: 6px 0; font-size: 13px; font-weight: 600;
+  color: var(--text-muted); text-decoration: none; transition: color 0.18s;
+}
+.sidebar-links a:hover { color: var(--text-main); }
+.sidebar-links a.active { color: var(--primary); border-left: 2px solid var(--primary); margin-left: -14px; padding-left: 12px; }
+
+/* MAIN */
+.guide-main { margin-left: 260px; flex: 1; padding: 40px 48px; max-width: 900px; }
+.guide-section { margin-bottom: 56px; }
+.guide-section:target .section-anchor { outline: none; }
+
+/* HERO */
+.guide-hero {
+  background: linear-gradient(135deg, rgba(123,97,255,0.12) 0%, rgba(255,107,53,0.08) 50%, rgba(255,215,0,0.06) 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 48px 40px;
+  text-align: center;
+  margin-bottom: 48px;
+  position: relative;
+  overflow: hidden;
+}
+.guide-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,215,0,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+.guide-hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3);
+  border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 700;
+  color: var(--primary); margin-bottom: 18px;
+}
+.guide-hero h1 { font-family: var(--font-display); font-size: 36px; color: var(--text-main); margin-bottom: 12px; }
+.guide-hero p { font-size: 16px; color: var(--text-muted); max-width: 520px; margin: 0 auto 24px; line-height: 1.7; }
+.hero-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--primary); color: #1a1400; font-family: var(--font-body); font-weight: 800; font-size: 14px; padding: 12px 28px; border-radius: 12px; text-decoration: none; transition: all 0.2s; }
+.hero-btn:hover { background: #ffe033; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,215,0,0.3); }
+
+/* TYPOGRAPHY */
+h2 { font-family: var(--font-display); font-size: 26px; color: var(--text-main); margin-bottom: 14px; }
+h3 { font-family: var(--font-display); font-size: 20px; color: var(--text-main); margin: 24px 0 10px; }
+h4 { font-size: 16px; font-weight: 800; color: var(--text-main); margin: 18px 0 8px; }
+p { font-size: 14px; color: #c8d0e8; line-height: 1.8; margin-bottom: 12px; }
+.section-divider { height: 1px; background: var(--border); margin: 40px 0; }
+
+/* CODE */
+.code-block {
+  background: var(--bg-card2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin: 14px 0;
+}
+.code-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: rgba(0,0,0,0.2);
+  border-bottom: 1px solid var(--border);
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dots span { width: 10px; height: 10px; border-radius: 50%; }
+.code-lang { font-size: 11px; color: var(--text-muted); font-family: monospace; }
+.code-copy { font-size: 11px; color: var(--text-muted); background: none; border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; cursor: pointer; font-family: var(--font-body); transition: all 0.18s; }
+.code-copy:hover { color: var(--primary); border-color: var(--primary); }
+pre { padding: 18px; overflow-x: auto; }
+pre code { font-family: 'Fira Code', 'Courier New', monospace; font-size: 13px; line-height: 1.7; color: #f8f8f2; background: none; border: none; padding: 0; }
+.kw { color: #ff79c6; }
+.str { color: #f1fa8c; }
+.cm { color: #6272a4; font-style: italic; }
+.fn { color: #50fa7b; }
+.nm { color: #bd93f9; }
+.op { color: #ff5555; }
+
+/* CARDS GRID */
+.guide-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; margin: 18px 0; }
+.guide-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.guide-card:hover { border-color: rgba(255,215,0,0.25); transform: translateY(-2px); }
+.guide-card-icon { font-size: 26px; margin-bottom: 10px; }
+.guide-card h4 { margin: 0 0 6px; font-size: 14px; }
+.guide-card p { font-size: 12px; margin: 0; }
+
+/* STEPS */
+.step-list { list-style: none; counter-reset: steps; }
+.step-item {
+  counter-increment: steps;
+  display: flex; gap: 16px; margin-bottom: 20px;
+  align-items: flex-start;
+}
+.step-num {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(255,215,0,0.12); border: 1px solid rgba(255,215,0,0.3);
+  color: var(--primary); font-family: var(--font-display); font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-content { flex: 1; }
+.step-content strong { display: block; font-size: 14px; font-weight: 800; margin-bottom: 4px; }
+
+/* ALERT */
+.alert { border-radius: 10px; padding: 14px 16px; margin: 14px 0; font-size: 13px; line-height: 1.6; display: flex; gap: 10px; align-items: flex-start; }
+.alert-info { background: rgba(123,97,255,0.1); border: 1px solid rgba(123,97,255,0.3); color: #c4b5fd; }
+.alert-warn { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.3); color: #fde68a; }
+.alert-success { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3); color: #86efac; }
+.alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* TABLE */
+.guide-table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 13px; }
+.guide-table th { text-align: left; padding: 10px 12px; background: var(--bg-surface); color: var(--primary); font-weight: 800; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+.guide-table td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); color: #c8d0e8; vertical-align: top; }
+.guide-table tr:hover td { background: rgba(255,255,255,0.02); }
+code.inline { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; font-family: monospace; font-size: 12px; color: #fbbf24; }
+
+/* TOC */
+.toc-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 32px; }
+.toc-card h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 12px; font-weight: 800; }
+.toc-card a { display: block; font-size: 13px; color: var(--text-muted); text-decoration: none; padding: 4px 0; transition: color 0.18s; }
+.toc-card a:hover { color: var(--primary); }
+
+/* MOBILE */
+.sidebar-toggle { display: none; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 10px; font-size: 18px; cursor: pointer; color: var(--text-main); }
+@media (max-width: 768px) {
+  .guide-sidebar { transform: translateX(-100%); transition: transform 0.3s; z-index: 200; width: 240px; }
+  .guide-sidebar.open { transform: translateX(0); }
+  .guide-main { margin-left: 0; padding: 24px 16px; }
+  .guide-hero { padding: 32px 20px; }
+  .guide-hero h1 { font-size: 26px; }
+  .sidebar-toggle { display: block; }
+  .guide-cards { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 400px) {
+  .guide-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="guide-header">
+  <a href="#" class="guide-logo">ぎ TKEHub Guía</a>
+  <div class="guide-header-links">
+    <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+    <a href="index.html" class="btn-back">← Volver a TKEHub</a>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="guide-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="guide-sidebar" id="guideSidebar">
+    <div class="sidebar-category">
+      <div class="sidebar-category-label">Introducción</div>
+      <div class="sidebar-links">
+        <a href="#intro" class="active">¿Qué es TKEHub?</a>
+        <a href="#inicio-rapido">🚀 Inicio — Jugadores</a>
+      </div>
+    </div>
+    <div class="sidebar-category">
+      <div class="sidebar-category-label">Perfiles</div>
+      <div class="sidebar-links">
+        <a href="#crear-perfil">👤 Crear tu Perfil</a>
+        <a href="#ranking-info">🥇 Cómo funciona el Ranking</a>
+        <a href="#desafios-info">🎯 Desafíos</a>
+        <a href="#estados-info">🟢 Estados</a>
+        <a href="#sanciones">⚠️ Sanciones</a>
+        <a href="#scripts-json">📁 Scripts JSON</a>
+        <a href="#king-queen">King & Queen</a>
+      </div>
+    </div>
+    <div class="sidebar-category">
+      <div class="sidebar-category-label">Torneos</div>
+      <div class="sidebar-links">
+        <a href="#torneos">Crear Torneos</a>
+        <a href="#brackets">Sistema de Brackets</a>
+        <a href="#puntajes">Editar Puntajes</a>
+      </div>
+    </div>
+    <div class="sidebar-category">
+      <div class="sidebar-category-label">Contenido</div>
+      <div class="sidebar-links">
+        <a href="#noticias">Publicar Noticias</a>
+        <a href="#desafios">Crear Desafíos</a>
+        <a href="#ranking">Ranking</a>
+      </div>
+    </div>
+    <div class="sidebar-category">
+      <div class="sidebar-category-label">Administración</div>
+      <div class="sidebar-links">
+        <a href="#admin">Panel Admin</a>
+        <a href="#estados">Estados de Jugadores</a>
+        <a href="#contrasena">Cambiar Contraseña</a>
+        <a href="#advertencias">Sistema de Advertencias</a>
+      </div>
+    </div>
+    <div class="sidebar-category">
+      <div class="sidebar-category-label">Referencia</div>
+      <div class="sidebar-links">
+        <a href="#scripts-ref">Formato de Scripts</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="guide-main">
+
+    <!-- HERO -->
+    <div class="guide-hero">
+      <div class="guide-hero-badge">⭐ v2.0 — Documentación Oficial</div>
+      <h1>Guía Completa de TKEHub</h1>
+      <p>Todo lo que necesitas saber para gestionar torneos, perfiles, noticias y rankings de tu comunidad Brawl Stars.</p>
+      <a href="#inicio-rapido" class="hero-btn">🚀 Empezar ahora</a>
+    </div>
+
+    <!-- TABLE OF CONTENTS -->
+    <div class="toc-card">
+      <h4>📋 En esta guía</h4>
+      <a href="#intro">¿Qué es TKEHub?</a>
+      <a href="#inicio-rapido">🚀 Inicio Rápido — Jugadores</a>
+      <a href="#crear-perfil">👤 Crear tu Perfil</a>
+      <a href="#scripts-json">📁 Scripts JSON</a>
+      <a href="#ranking-info">🥇 Cómo funciona el Ranking</a>
+      <a href="#desafios-info">🎯 Desafíos</a>
+      <a href="#estados-info">🟢 Estados: Activo e Inactivo</a>
+      <a href="#sanciones">⚠️ Advertencias y Sanciones</a>
+      <a href="#torneos">🏆 Torneos</a>
+      <a href="#noticias">📢 Anuncios</a>
+      <a href="#admin">🛡 Panel Admin</a>
+      <a href="#faq">❓ Preguntas Frecuentes</a>
+    </div>
+
+    <!-- INTRO -->
+    <div class="guide-section" id="intro">
+      <h2>⭐ ¿Qué es TKEHub?</h2>
+      <p>TKEHub es una plataforma web completa para gestionar comunidades de Brawl Stars. Permite registrar jugadores, organizar torneos con brackets visuales, publicar noticias y desafíos, y mantener un ranking actualizado, todo sin necesidad de servidores — funciona 100% en el navegador.</p>
+      
+      <div class="guide-cards">
+        <div class="guide-card"><div class="guide-card-icon">👤</div><h4>Perfiles</h4><p>Registra jugadores con King o Queen Edition, código de jugador y estadísticas.</p></div>
+        <div class="guide-card"><div class="guide-card-icon">🏆</div><h4>Torneos</h4><p>Crea brackets automáticos para 1v1 o torneos múltiples con hasta 16 dúos.</p></div>
+        <div class="guide-card"><div class="guide-card-icon">📰</div><h4>Noticias</h4><p>Publica anuncios con imagen, título y descripción. Soporta URLs de imágenes y GIFs.</p></div>
+        <div class="guide-card"><div class="guide-card-icon">🎯</div><h4>Desafíos</h4><p>Crea retos con fechas de inicio y fin, y asigna ganadores al finalizar.</p></div>
+        <div class="guide-card"><div class="guide-card-icon">🥇</div><h4>Ranking</h4><p>Clasifica clubes y jugadores por megahuchas, victorias en desafíos y torneos.</p></div>
+        <div class="guide-card"><div class="guide-card-icon">🛡</div><h4>Admin</h4><p>Panel exclusivo para gestionar todos los datos, estados y contraseñas.</p></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- INICIO RÁPIDO JUGADORES -->
+    <div class="guide-section" id="inicio-rapido">
+      <h2>🚀 Inicio Rápido — Para Jugadores</h2>
+      <p>Si eres nuevo en TKEHub, sigue estos pasos para registrarte correctamente en la comunidad.</p>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Abre la página principal (Perfil)</strong>Es la primera página que aparece, con el formulario de registro de jugador.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Elige tu Edición</strong>Toca <strong>👑 King Edition</strong> si eres varón, o <strong>💎 Queen Edition</strong> si eres mujer. Esto define en qué categoría aparecerás.</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Completa el formulario</strong>Nombre en el juego, código de jugador (#TAG), copas actuales, brawler principal y demás datos. Cuanto más completo, mejor.</div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-content"><strong>Toca "💾 Guardar"</strong>Tus datos se guardan directamente en la base de datos de la comunidad. No necesitas hacer nada más.</div></li>
+        <li class="step-item"><div class="step-num">5</div><div class="step-content"><strong>Descarga tu Script</strong>Toca "⬇ Descargar Script" para guardar un archivo .json con tus datos. Guárdalo bien — lo necesitarás para actualizar tu perfil en el futuro.</div></li>
+      </ul>
+      <div class="alert alert-info"><div class="alert-icon">ℹ️</div><div>Todos los datos de la comunidad se guardan en la nube (Firebase). Puedes ver y actualizar tu perfil desde cualquier dispositivo con internet.</div></div>
+      <div class="alert alert-warn"><div class="alert-icon">⚠️</div><div>Si cambias tu nombre de usuario o tus copas en el juego, <strong>actualiza tu perfil en TKEHub</strong> para que el ranking se refleje correctamente. Usa tu script guardado para cargar tus datos y editar solo lo que cambió.</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- CREAR PERFIL -->
+    <div class="guide-section" id="crear-perfil">
+      <h2>👤 Tu Perfil de Jugador</h2>
+      <p>El perfil es tu identidad dentro de TKEHub. Es importante llenarlo correctamente para aparecer en el ranking y participar en los desafíos.</p>
+      
+      <h3>¿Qué datos ingresar?</h3>
+      <table class="guide-table">
+        <thead><tr><th>Campo</th><th>Qué poner</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Edición</strong></td><td>👑 King si eres varón, 💎 Queen si eres mujer</td><td>King Edition</td></tr>
+          <tr><td><strong>Nombre *</strong></td><td>Tu nombre exacto en Brawl Stars (respeta mayúsculas)</td><td>ShadowBrawler</td></tr>
+          <tr><td><strong>Código *</strong></td><td>Tu tag de jugador. Se agrega # automáticamente.</td><td>#YKQ2PG9L</td></tr>
+          <tr><td><strong>Copas</strong></td><td>Tus trofeos actuales (elige el rango más cercano)</td><td>61k+</td></tr>
+          <tr><td><strong>Brawlers</strong></td><td>Cantidad de brawlers que tienes desbloqueados</td><td>45</td></tr>
+          <tr><td><strong>Prestigios</strong></td><td>Tu nivel de prestigio actual</td><td>3</td></tr>
+          <tr><td><strong>Mains</strong></td><td>Tu brawler favorito o con el que juegas más</td><td>Leon</td></tr>
+          <tr><td><strong>Modo</strong></td><td>Tu modo de juego preferido</td><td>Caza Estelar</td></tr>
+          <tr><td><strong>Club</strong></td><td>Nombre de tu club actual (o Ninguno si no tienes)</td><td>Los Campeones</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Cómo actualizar tu perfil</h3>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Carga tu script anterior</strong>En la zona de carga (☁️) arrastra o toca para seleccionar tu archivo .json guardado. Esto rellenará el formulario con tus datos actuales.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Modifica lo que cambió</strong>Edita solo los campos que cambiaron (copas, club, brawlers, etc.).</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Guarda de nuevo</strong>Toca "💾 Guardar" — como tu código (#TAG) no cambia, el sistema actualizará tu perfil existente sin crear uno duplicado.</div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-content"><strong>Descarga el script actualizado</strong>Toca "⬇ Descargar Script" para reemplazar tu archivo .json anterior con el nuevo.</div></li>
+      </ul>
+
+      <div class="alert alert-info"><div class="alert-icon">💡</div><div>El <strong>código de jugador (#TAG)</strong> es como tu ID único. Si dos personas usan el mismo código, el segundo sobrescribe al primero. Verifica bien tu código en el juego antes de guardar.</div></div>
+      <div class="alert alert-warn"><div class="alert-icon">⚠️</div><div><strong>Mantén tu perfil actualizado.</strong> El ranking de copas se genera automáticamente desde los perfiles. Si no actualizas tus copas, aparecerás con datos viejos.</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="section-divider"></div>
+
+    <!-- RANKING INFO FOR PLAYERS -->
+    <div class="guide-section" id="ranking-info">
+      <h2>🥇 Cómo Funciona el Ranking</h2>
+      <p>El ranking de TKEHub tiene varias secciones, cada una actualizada de forma diferente:</p>
+      
+      <div class="guide-cards">
+        <div class="guide-card">
+          <div class="guide-card-icon">🏆</div>
+          <h4>Ranking por Copas — Jugadores</h4>
+          <p>Se genera <strong>automáticamente</strong> desde los perfiles registrados. Cuantas más copas tengas en tu perfil, más arriba apareces. Actualiza tu perfil para subir de posición.</p>
+        </div>
+        <div class="guide-card">
+          <div class="guide-card-icon">🏛</div>
+          <h4>Ranking por Copas — Clubes</h4>
+          <p>Lo actualiza el <strong>admin manualmente</strong>. Si tu club no aparece o tiene datos incorrectos, comunícate con el administrador.</p>
+        </div>
+        <div class="guide-card">
+          <div class="guide-card-icon">🎯</div>
+          <h4>Ganadores de Desafíos</h4>
+          <p>Cada vez que el admin asigna ganadores a un desafío, tu nombre aparece en este ranking. Cuantos más desafíos ganes, más arriba subes.</p>
+        </div>
+        <div class="guide-card">
+          <div class="guide-card-icon">🏆</div>
+          <h4>Ganadores de Torneos</h4>
+          <p>Al finalizar un torneo, el admin registra al ganador. Las victorias se acumulan en el tiempo.</p>
+        </div>
+      </div>
+
+      <div class="alert alert-info"><div class="alert-icon">💡</div><div>El ranking se actualiza en tiempo real. No necesitas recargar la página para ver los cambios más recientes.</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- DESAFIOS INFO -->
+    <div class="guide-section" id="desafios-info">
+      <h2>🎯 Desafíos — Cómo Participar</h2>
+      <p>Los desafíos son retos con fecha de inicio y fin. Mientras está activo, puedes participar y optar a estar en el top 10 de ganadores.</p>
+      
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Revisa los desafíos activos</strong>En la página de Desafíos verás el badge <span style="background:rgba(74,222,128,0.15);color:#4ade80;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;">🟢 Activo</span> y el tiempo restante en countdown.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Participa según las reglas</strong>Cada desafío indica si la clasificación es por copas ganadas o por puntos. Cumple el reto dentro del plazo.</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-content"><strong>El admin registra los ganadores</strong>Al finalizar el desafío, el administrador asigna el top 10 con las copas o puntos de cada participante. Tu posición depende de ese valor.</div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-content"><strong>Apareces en el Ranking</strong>Cada desafío que ganas suma 1 punto a tu ranking de desafíos. No importa en qué posición quedaste dentro del top 10 — lo que cuenta es haber ganado.</div></li>
+      </ul>
+      <div class="alert alert-warn"><div class="alert-icon">⚠️</div><div>Los desafíos con badge <span style="background:rgba(248,113,113,0.15);color:#f87171;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:700;">🔴 Finalizado</span> ya no aceptan participantes. Solo el admin puede ver y editar la lista de ganadores.</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ESTADOS INFO -->
+    <div class="guide-section" id="estados-info">
+      <h2>🟢 Estado de tu Cuenta: Activo e Inactivo</h2>
+      <p>Cada jugador tiene un estado que refleja su participación en la comunidad. El admin puede cambiar tu estado según tu actividad.</p>
+      
+      <div class="guide-cards">
+        <div class="guide-card" style="border-color:rgba(74,222,128,0.3);">
+          <div class="guide-card-icon">🟢</div>
+          <h4 style="color:#4ade80;">Activo</h4>
+          <p>Estado normal. Participas en torneos, desafíos y sorteos. Apareces en el ranking sin restricciones.</p>
+        </div>
+        <div class="guide-card" style="border-color:rgba(251,191,36,0.3);">
+          <div class="guide-card-icon">🟡</div>
+          <h4 style="color:#fbbf24;">Inactivo (Advertido)</h4>
+          <p>El admin te marcó como inactivo. Recibirás una advertencia en la página de Anuncios con un countdown de <strong>24 horas</strong> para reactivarte.</p>
+        </div>
+        <div class="guide-card" style="border-color:rgba(248,113,113,0.3);">
+          <div class="guide-card-icon">🔴</div>
+          <h4 style="color:#f87171;">Expulsado</h4>
+          <p>Si no te reactivaste dentro de las 24h de advertencia, el admin puede expulsarte. Tu perfil ya no aparece en sorteos ni en listas activas.</p>
+        </div>
+      </div>
+
+      <h3>¿Cómo reactivarte?</h3>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Revisa los Anuncios</strong>Si ves una advertencia con tu nombre, actúa inmediato — tienes 24 horas.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Contacta al admin</strong>Avisa que estás activo y pide que cambien tu estado de vuelta a Activo.</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Actualiza tu perfil</strong>Para demostrar actividad, actualiza tus copas o cualquier dato que haya cambiado.</div></li>
+      </ul>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SANCIONES -->
+    <div class="guide-section" id="sanciones">
+      <h2>⚠️ Advertencias y Sanciones</h2>
+      <p>Para mantener una comunidad saludable, TKEHub tiene un sistema de advertencias automático.</p>
+      
+      <div class="alert alert-warn"><div class="alert-icon">⚠️</div><div><strong>Una advertencia NO es una expulsión.</strong> Es un aviso para que te reactives. Tienes 24 horas para responder.</div></div>
+
+      <h3>¿Qué puede causar una advertencia?</h3>
+      <ul>
+        <li style="margin-bottom:8px;">No participar en las actividades de la comunidad por un período prolongado.</li>
+        <li style="margin-bottom:8px;">No actualizar tu perfil cuando el admin lo solicite.</li>
+        <li style="margin-bottom:8px;">Cualquier conducta que el admin considere inapropiada para la comunidad.</li>
+      </ul>
+
+      <h3>Proceso de advertencia</h3>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-content"><strong>El admin te marca como Inactivo</strong>Aparece una card de advertencia en la sección de Anuncios con tu nombre y un countdown de 24 horas.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Tienes 24 horas</strong>Contacta al admin dentro de este plazo. El countdown es visible para toda la comunidad.</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Si te reactivas</strong>El admin cambia tu estado a Activo y la advertencia desaparece automáticamente.</div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-content"><strong>Si no respondes</strong>El admin puede publicar un mensaje de expulsión. Tu perfil queda inactivo en la plataforma.</div></li>
+      </ul>
+    </div>
+
+    <!-- SCRIPTS JSON -->
+    <div class="guide-section" id="scripts-json">
+      <h2>📁 Scripts JSON</h2>
+      <p>TKEHub permite guardar y cargar datos usando archivos <code class="inline">.json</code>. Esto facilita la migración de datos entre dispositivos.</p>
+      <h3>Descargar un script</h3>
+      <p>En cualquier formulario, toca <em>⬇ Descargar Script</em> para guardar los datos actuales como JSON.</p>
+      <h3>Cargar un script</h3>
+      <p>Usa la zona de carga (☁️) al inicio de cada página para importar datos desde un archivo .json.</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span style="background:#FF605C"></span><span style="background:#FFBD44"></span><span style="background:#00CA4E"></span></div><span class="code-lang">JSON — Perfil de ejemplo</span><button class="code-copy" onclick="copyCode(this)">Copiar</button></div>
+        <pre><code>{
+  <span class="str">"nombre"</span>: <span class="str">"ShadowBrawler99"</span>,
+  <span class="str">"codigo"</span>: <span class="str">"#YKQ2PG9L"</span>,
+  <span class="str">"edition"</span>: <span class="str">"king"</span>,
+  <span class="str">"edad"</span>: <span class="str">"17"</span>,
+  <span class="str">"copas"</span>: <span class="str">"61k+"</span>,
+  <span class="str">"mains"</span>: <span class="str">"Leon"</span>,
+  <span class="str">"modo"</span>: <span class="str">"Caza Estelar"</span>,
+  <span class="str">"tags"</span>: [<span class="str">"Agresivo"</span>, <span class="str">"Estratégico"</span>]
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- KING & QUEEN -->
+    <div class="guide-section" id="king-queen">
+      <h2>👑 King & Queen Edition</h2>
+      <p>TKEHub divide a los jugadores en dos ediciones:</p>
+      <div class="guide-cards">
+        <div class="guide-card" style="border-color:rgba(255,215,0,0.3);background:rgba(255,215,0,0.05);">
+          <div class="guide-card-icon">👑</div>
+          <h4 style="color:#FFD700;">King Edition</h4>
+          <p>Para jugadores masculinos. Se identifica con color dorado y el ícono de corona.</p>
+        </div>
+        <div class="guide-card" style="border-color:rgba(255,105,180,0.3);background:rgba(255,105,180,0.05);">
+          <div class="guide-card-icon">💎</div>
+          <h4 style="color:#FF69B4;">Queen Edition</h4>
+          <p>Para jugadoras femeninas. Se identifica con color rosa y el ícono de diamante.</p>
+        </div>
+      </div>
+      <p>En el panel admin puedes filtrar por edición usando las pestañas <em>👑 King</em> y <em>💎 Queen</em>.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- TORNEOS -->
+    <div class="guide-section" id="torneos">
+      <h2>🏆 Crear Torneos</h2>
+      <p>Los torneos se crean desde <code class="inline">torneos.html</code>. Solo el admin puede crearlos y editar puntajes; los miembros solo pueden ver los brackets.</p>
+      <h3>Tipos de torneo</h3>
+      <div class="guide-cards">
+        <div class="guide-card"><div class="guide-card-icon">⚔️</div><h4>1 vs 1</h4><p>Enfrentamiento directo entre dos equipos. Se ingresan los 2 nombres y se genera un bracket simple.</p></div>
+        <div class="guide-card"><div class="guide-card-icon">🎮</div><h4>Múltiple</h4><p>Torneo con 4, 8 o 16 dúos. Se generan brackets automáticos en árbol eliminatorio.</p></div>
+      </div>
+    </div>
+
+    <!-- BRACKETS -->
+    <div class="guide-section" id="brackets">
+      <h2>📊 Sistema de Brackets</h2>
+      <p>Al crear un torneo múltiple, TKEHub genera automáticamente el árbol de eliminación directa con los equipos a la izquierda y derecha, convergiendo hacia el campeón en el centro.</p>
+      <div class="alert alert-info"><div class="alert-icon">ℹ️</div><div>Los brackets se pueden <strong>desplazar horizontalmente</strong> si el torneo es muy grande. En iOS, usa el gesto de deslizamiento con un dedo.</div></div>
+    </div>
+
+    <!-- PUNTAJES -->
+    <div class="guide-section" id="puntajes">
+      <h2>🎯 Editar Puntajes</h2>
+      <p>Como administrador, verás campos numéricos editables en cada enfrentamiento del bracket. Al ingresar los puntajes, el sistema determina automáticamente el ganador y lo avanza a la siguiente ronda.</p>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Inicia sesión como admin</strong> en la página de Torneos.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Encuentra el partido</strong> en el bracket y escribe el puntaje de cada equipo.</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-content"><strong>El ganador se marca en dorado</strong> y avanza automáticamente a la siguiente ronda.</div></li>
+      </ul>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- NOTICIAS -->
+    <div class="guide-section" id="noticias">
+      <h2>📰 Publicar Noticias</h2>
+      <p>Desde <code class="inline">noticias.html</code>, el admin puede publicar anuncios de la comunidad.</p>
+      <h3>Agregar imágenes o GIFs</h3>
+      <p>En lugar de subir archivos (que consumen mucho espacio), TKEHub usa <strong>URLs de imagen</strong>. Pega el enlace directo de cualquier imagen o GIF:</p>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span style="background:#FF605C"></span><span style="background:#FFBD44"></span><span style="background:#00CA4E"></span></div><span class="code-lang">Ejemplos de URLs válidas</span></div>
+        <pre><code><span class="cm">// Imagen directa</span>
+https://i.imgur.com/ejemplo.jpg
+
+<span class="cm">// GIF animado</span>
+https://media.giphy.com/media/xxxx/giphy.gif
+
+<span class="cm">// Imagen de Discord</span>
+https://cdn.discordapp.com/attachments/.../imagen.png</code></pre>
+      </div>
+      <div class="alert alert-warn"><div class="alert-icon">⚠️</div><div>La URL debe ser un <strong>enlace directo</strong> a la imagen (que termine en .jpg, .png, .gif, .webp). Los enlaces de páginas web que contienen imágenes no funcionarán.</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- DESAFÍOS -->
+    <div class="guide-section" id="desafios">
+      <h2>🎯 Crear Desafíos</h2>
+      <p>Los desafíos son retos con duración limitada. Requieren título, descripción, fecha de inicio y fecha de fin.</p>
+      <h3>Estados del desafío</h3>
+      <div class="guide-cards">
+        <div class="guide-card"><div class="guide-card-icon">🟡</div><h4>Próximamente</h4><p>La fecha de inicio aún no ha llegado.</p></div>
+        <div class="guide-card"><div class="guide-card-icon">🟢</div><h4>Activo</h4><p>El desafío está en curso ahora mismo.</p></div>
+        <div class="guide-card"><div class="guide-card-icon">🔴</div><h4>Finalizado</h4><p>La fecha de fin ya pasó. El admin puede asignar ganadores.</p></div>
+      </div>
+      <h3>Asignar ganadores</h3>
+      <p>Cuando un desafío finaliza, el admin ve el botón <em>🏅 Ganadores</em>. Al tocarlo, puede seleccionar múltiples jugadores de la lista registrada.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- RANKING -->
+    <div class="guide-section" id="ranking">
+      <h2>🥇 Ranking</h2>
+      <p>La página <code class="inline">ranking.html</code> muestra cuatro clasificaciones:</p>
+      <table class="guide-table">
+        <thead><tr><th>Sección</th><th>Descripción</th><th>Edición</th></tr></thead>
+        <tbody>
+          <tr><td>🏆 Megahuchas Ganadas</td><td>Ranking de clubes por megahuchas</td><td>Solo admin</td></tr>
+          <tr><td>🎯 Ganadores de Desafíos</td><td>Se actualiza automáticamente con los ganadores asignados</td><td>Auto + admin</td></tr>
+          <tr><td>🏆 Ganadores de Torneos — Jugadores</td><td>Se actualiza con los campeones de torneos</td><td>Auto + admin</td></tr>
+          <tr><td>🏆 Ganadores de Torneos — Clubes</td><td>Ranking de clubes por victorias en torneos</td><td>Solo admin</td></tr>
+        </tbody>
+      </table>
+      <div class="alert alert-info"><div class="alert-icon">ℹ️</div><div>Los ganadores de desafíos y campeones de torneos se <strong>calculan automáticamente</strong> desde los datos existentes. El admin puede complementar con entradas manuales usando el botón <em>✏️ Editar Ranking</em>.</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ADMIN -->
+    <div class="guide-section" id="admin">
+      <h2>🛡 Panel de Administración</h2>
+      <p>El panel admin (<code class="inline">admin-perfiles.html</code>) es el centro de control de TKEHub.</p>
+      <h3>Funciones disponibles</h3>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">✏️</div><div class="step-content"><strong>Editar perfiles</strong> — Modifica nombre, código, copas y club de cualquier jugador.</div></li>
+        <li class="step-item"><div class="step-num">⬇️</div><div class="step-content"><strong>Exportar datos</strong> — Descarga todos los perfiles en un único JSON.</div></li>
+        <li class="step-item"><div class="step-num">🔴</div><div class="step-content"><strong>Gestionar estados</strong> — Cambia el estado de jugadores entre activo/inactivo.</div></li>
+        <li class="step-item"><div class="step-num">🔑</div><div class="step-content"><strong>Cambiar contraseña</strong> — Actualiza la contraseña admin desde el mismo panel.</div></li>
+        <li class="step-item"><div class="step-num">🗑️</div><div class="step-content"><strong>Limpiar datos</strong> — Elimina todos los perfiles (con confirmación).</div></li>
+      </ul>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ESTADOS -->
+    <div class="guide-section" id="estados">
+      <h2>🟢 Estados de Jugadores</h2>
+      <p>Cada jugador en el panel admin tiene un <strong>punto de estado</strong> que el admin puede cambiar tocándolo:</p>
+      <div class="guide-cards">
+        <div class="guide-card"><div style="width:14px;height:14px;border-radius:50%;background:#4ade80;margin-bottom:10px;box-shadow:0 0 8px rgba(74,222,128,0.6);"></div><h4>🟢 Activo</h4><p>El jugador está activo en la comunidad. Estado por defecto.</p></div>
+        <div class="guide-card"><div style="width:14px;height:14px;border-radius:50%;background:#f87171;margin-bottom:10px;box-shadow:0 0 8px rgba(248,113,113,0.6);"></div><h4>🔴 Inactivo</h4><p>El jugador fue marcado como inactivo. Se activa el sistema de advertencias.</p></div>
+        <div class="guide-card"><div style="width:14px;height:14px;border-radius:50%;background:#fbbf24;margin-bottom:10px;box-shadow:0 0 8px rgba(251,191,36,0.6);"></div><h4>🟡 Advertido</h4><p>Tiene una advertencia activa con countdown en la página de Noticias.</p></div>
+        <div class="guide-card"><div style="width:14px;height:14px;border-radius:50%;background:#6b7280;margin-bottom:10px;"></div><h4>⚫ Expulsado</h4><p>El jugador fue expulsado. Se publicó el mensaje correspondiente.</p></div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- ADVERTENCIAS -->
+    <div class="guide-section" id="advertencias">
+      <h2>⚠️ Sistema de Advertencias</h2>
+      <p>Cuando el admin marca un jugador como <strong>inactivo</strong>, se activa automáticamente el siguiente flujo:</p>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-content"><strong>Aparece una tarjeta de advertencia</strong> en la página de Noticias con el nombre del jugador y un countdown de 24 horas.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-content"><strong>Si el admin reactiva al jugador</strong> antes de las 24h, la advertencia desaparece automáticamente.</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-content"><strong>Al vencer las 24 horas</strong>, la advertencia desaparece para los miembros pero el admin ve una pregunta: <em>¿Enviar mensaje de expulsión?</em></div></li>
+        <li class="step-item"><div class="step-num">4a</div><div class="step-content"><strong>Si el admin confirma:</strong> Se publica un mensaje de expulsión visible para todos, y se elimina automáticamente a las 24 horas.</div></li>
+        <li class="step-item"><div class="step-num">4b</div><div class="step-content"><strong>Si el admin rechaza:</strong> El mensaje se descarta silenciosamente.</div></li>
+      </ul>
+      <div class="alert alert-warn"><div class="alert-icon">⚠️</div><div>El countdown funciona en tiempo real. Si cierras el navegador y lo abres después de 24h, la advertencia aparecerá como expirada y el admin verá la decisión pendiente.</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- CAMBIAR CONTRASEÑA -->
+    <div class="guide-section" id="contrasena">
+      <h2>🔑 Cambiar Contraseña</h2>
+      <p>La contraseña por defecto es <code class="inline">admin123</code>. Se recomienda cambiarla inmediatamente.</p>
+      <ul class="step-list">
+        <li class="step-item"><div class="step-num">1</div><div class="step-content">Ve a <code class="inline">admin-perfiles.html</code> e inicia sesión.</div></li>
+        <li class="step-item"><div class="step-num">2</div><div class="step-content">Toca el botón <em>🔑 Cambiar Contraseña</em>.</div></li>
+        <li class="step-item"><div class="step-num">3</div><div class="step-content">Ingresa la contraseña actual y la nueva (mínimo 6 caracteres).</div></li>
+        <li class="step-item"><div class="step-num">4</div><div class="step-content">La nueva contraseña se guarda en el dispositivo y se usa en todas las páginas.</div></li>
+      </ul>
+      <div class="alert alert-warn"><div class="alert-icon">⚠️</div><div>La contraseña se guarda en el <code class="inline">localStorage</code> del dispositivo. Si cambias de dispositivo o limpias los datos del navegador, la contraseña vuelve a ser <code class="inline">admin123</code>.</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- SCRIPTS REFERENCE -->
+    <div class="guide-section" id="scripts-ref">
+      <h2>📁 Referencia de Scripts JSON</h2>
+      <h3>Perfil de Jugador</h3>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span style="background:#FF605C"></span><span style="background:#FFBD44"></span><span style="background:#00CA4E"></span></div><span class="code-lang">perfil.json</span><button class="code-copy" onclick="copyCode(this)">Copiar</button></div>
+        <pre><code>{
+  <span class="str">"nombre"</span>: <span class="str">"NombreJugador"</span>,
+  <span class="str">"codigo"</span>: <span class="str">"#XXXXXXX"</span>,
+  <span class="str">"edition"</span>: <span class="str">"king"</span>,        <span class="cm">// "king" o "queen"</span>
+  <span class="str">"edad"</span>: <span class="str">"17"</span>,
+  <span class="str">"supercell"</span>: <span class="str">"tu.id"</span>,
+  <span class="str">"anio_creacion"</span>: <span class="str">"2022"</span>,
+  <span class="str">"nivel"</span>: <span class="str">"200"</span>,
+  <span class="str">"mains"</span>: <span class="str">"Leon"</span>,
+  <span class="str">"modo"</span>: <span class="str">"Caza Estelar"</span>,
+  <span class="str">"tags"</span>: [<span class="str">"Agresivo"</span>],
+  <span class="str">"club"</span>: <span class="str">"Club A"</span>,
+  <span class="str">"copas"</span>: <span class="str">"51k+"</span>,
+  <span class="str">"brawlers_count"</span>: <span class="str">"80"</span>,
+  <span class="str">"prestigios"</span>: <span class="str">"3"</span>,
+  <span class="str">"brawler_rango"</span>: <span class="str">"Crow"</span>
+}</code></pre>
+      </div>
+
+      <h3>Noticia</h3>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span style="background:#FF605C"></span><span style="background:#FFBD44"></span><span style="background:#00CA4E"></span></div><span class="code-lang">noticia.json</span><button class="code-copy" onclick="copyCode(this)">Copiar</button></div>
+        <pre><code>{
+  <span class="str">"titulo"</span>: <span class="str">"Título de la noticia"</span>,
+  <span class="str">"detalles"</span>: <span class="str">"Descripción completa...\nPuede tener saltos de línea."</span>,
+  <span class="str">"imagen"</span>: <span class="str">"https://i.imgur.com/ejemplo.gif"</span>
+}</code></pre>
+      </div>
+
+      <h3>Desafío</h3>
+      <div class="code-block">
+        <div class="code-header"><div class="code-dots"><span style="background:#FF605C"></span><span style="background:#FFBD44"></span><span style="background:#00CA4E"></span></div><span class="code-lang">desafio.json</span><button class="code-copy" onclick="copyCode(this)">Copiar</button></div>
+        <pre><code>{
+  <span class="str">"titulo"</span>: <span class="str">"Nombre del desafío"</span>,
+  <span class="str">"detalles"</span>: <span class="str">"Descripción y reglas del desafío."</span>,
+  <span class="str">"inicio"</span>: <span class="str">"2025-06-01"</span>,       <span class="cm">// formato YYYY-MM-DD</span>
+  <span class="str">"fin"</span>: <span class="str">"2025-06-15"</span>,
+  <span class="str">"imagen"</span>: <span class="str">"https://..."</span>      <span class="cm">// URL opcional</span>
+}</code></pre>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- FAQ -->
+    <div class="guide-section" id="faq">
+      <h2>❓ Preguntas Frecuentes</h2>
+
+      <h4>¿Los datos se borran si cierro el navegador?</h4>
+      <p>No. Los datos se guardan en la nube (Firebase) y son accesibles desde cualquier dispositivo con internet. No dependen de tu navegador ni de tu dispositivo.</p>
+
+      <h4>¿Puedo usar TKEHub en varios dispositivos?</h4>
+      <p>Sí. Como los datos están en la nube, puedes abrir TKEHub en tu celular, tablet o computadora y ver exactamente los mismos perfiles, rankings y desafíos.</p>
+
+      <h4>¿Qué pasa si olvido la contraseña de admin?</h4>
+      <p>La contraseña por defecto al instalar TKEHub es <code class="inline">admin123</code>. Si fue cambiada y no la recuerdas, el administrador técnico puede resetearla directamente en Firebase Console desde el documento <code class="inline">settings/admin</code>.</p>
+
+      <h4>¿Tengo que registrarme de nuevo cada vez que entro?</h4>
+      <p>No. Tu perfil queda guardado permanentemente en la base de datos. Solo necesitas actualizar tu perfil cuando cambien tus datos en el juego (copas, club, etc.).</p>
+
+      <h4>¿Por qué mi nombre no aparece en el ranking de copas?</h4>
+      <p>Porque no tienes copas registradas en tu perfil, o tu cuenta está marcada como inactiva. Actualiza tu perfil con las copas correctas y asegúrate de estar en estado Activo.</p>
+
+      <h4>¿Las URLs de imágenes pueden ser de cualquier sitio?</h4>
+      <p>Sí, siempre que sea un enlace directo a la imagen (no una página web). Si la imagen no carga, verifica que la URL termine en una extensión de imagen (.jpg, .png, .gif, .webp).</p>
+
+      <h4>¿El countdown de advertencias funciona cuando el navegador está cerrado?</h4>
+      <p>El tiempo se calcula basándose en el timestamp guardado. Cuando abras el navegador después de 24h, el sistema detectará automáticamente que el plazo venció.</p>
+    </div>
+
+    <div class="section-divider"></div>
+    <div style="text-align:center;padding:20px 0;color:var(--text-muted);font-size:13px;">
+      ぎ TKEHub Guía v3.0 — Hecho con 💛 para la comunidad Brawl Stars
+    </div>
+
+  </main>
+</div>
+
+<script>
+// Sidebar toggle for mobile
+document.getElementById('sidebarToggle').addEventListener('click', function() {
+  document.getElementById('guideSidebar').classList.toggle('open');
+});
+
+// Close sidebar when clicking a link on mobile
+document.querySelectorAll('.sidebar-links a').forEach(function(a) {
+  a.addEventListener('click', function() {
+    document.getElementById('guideSidebar').classList.remove('open');
+    // Update active
+    document.querySelectorAll('.sidebar-links a').forEach(function(l){ l.classList.remove('active'); });
+    a.classList.add('active');
+  });
+});
+
+// Highlight active sidebar link on scroll
+var sections = document.querySelectorAll('.guide-section[id]');
+window.addEventListener('scroll', function() {
+  var scrollY = window.scrollY + 100;
+  sections.forEach(function(section) {
+    var id = section.getAttribute('id');
+    var link = document.querySelector('.sidebar-links a[href="#' + id + '"]');
+    if (!link) return;
+    if (section.offsetTop <= scrollY && section.offsetTop + section.offsetHeight > scrollY) {
+      document.querySelectorAll('.sidebar-links a').forEach(function(l){ l.classList.remove('active'); });
+      link.classList.add('active');
+    }
+  });
+});
+
+// Copy code button
+function copyCode(btn) {
+  var pre = btn.closest('.code-block').querySelector('pre');
+  var text = pre.textContent;
+  try {
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = '✓ Copiado';
+      setTimeout(function(){ btn.textContent = 'Copiar'; }, 2000);
+    });
+  } catch(e) {
+    // Fallback
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    btn.textContent = '✓ Copiado';
+    setTimeout(function(){ btn.textContent = 'Copiar'; }, 2000);
+  }
+}
+</script>
+</body>
+</html>

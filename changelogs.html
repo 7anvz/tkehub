@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TKEHub — Changelogs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<style>
+:root {
+  --primary: #FFD700; --bg-dark: #0D0F1A; --bg-card: #161926;
+  --bg-card2: #1E2235; --bg-surface: #252A42;
+  --text-main: #F0F2FF; --text-muted: #8892B0;
+  --border: rgba(255,255,255,0.08); --border-focus: rgba(255,215,0,0.45);
+  --radius: 14px; --nav-h: 60px;
+  --font-display: 'Lilita One', cursive; --font-body: 'Nunito', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-body); background: var(--bg-dark); color: var(--text-main); padding-top: calc(var(--nav-h) + 24px); padding-bottom: 60px; min-height: 100vh; }
+/* NAVBAR */
+.navbar { position: fixed; top: 10px; left: 50%; transform: translateX(-50%); width: calc(100% - 24px); max-width: 1000px; height: var(--nav-h); background: rgba(22,25,38,0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 1000; box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
+.navbar-logo { font-family: var(--font-display); font-size: 17px; color: var(--primary); text-decoration: none; text-shadow: 0 0 20px rgba(255,215,0,0.4); white-space: nowrap; }
+.navbar-links { display: flex; align-items: center; gap: 1px; list-style: none; }
+.navbar-links a { display: flex; align-items: center; gap: 4px; padding: 6px 9px; border-radius: 9px; color: var(--text-muted); text-decoration: none; font-size: 12px; font-weight: 600; transition: all 0.2s; white-space: nowrap; }
+.navbar-links a:hover { color: var(--text-main); background: rgba(255,255,255,0.06); }
+.navbar-links a.active { color: var(--primary); background: rgba(255,215,0,0.1); }
+.navbar-links .nav-icon { font-size: 14px; }
+.navbar-links .nav-label { display: inline; }
+/* LAYOUT */
+.page-container { max-width: 740px; margin: 0 auto; padding: 0 16px; }
+.page-header { margin-bottom: 28px; }
+.page-header h1 { font-family: var(--font-display); font-size: 28px; color: var(--text-main); margin-bottom: 6px; }
+.page-header p { color: var(--text-muted); font-size: 14px; }
+/* CARD */
+.card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+/* CHANGELOG ENTRY */
+.cl-entry { border-left: 3px solid var(--primary); padding-left: 16px; margin-bottom: 28px; position: relative; }
+.cl-entry::before { content: ''; position: absolute; left: -7px; top: 4px; width: 11px; height: 11px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 8px rgba(255,215,0,0.5); }
+.cl-version { font-family: var(--font-display); font-size: 18px; color: var(--primary); margin-bottom: 3px; }
+.cl-date { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.cl-desc { font-size: 13px; color: #c8d0e8; line-height: 1.7; white-space: pre-wrap; }
+.cl-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.cl-tag { font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; }
+.cl-tag.new { background: rgba(74,222,128,0.15); color: #4ade80; }
+.cl-tag.fix { background: rgba(96,165,250,0.15); color: #60a5fa; }
+.cl-tag.update { background: rgba(251,191,36,0.15); color: #fbbf24; }
+.cl-tag.remove { background: rgba(248,113,113,0.15); color: #f87171; }
+.cl-tag.security { background: rgba(167,139,250,0.15); color: #a78bfa; }
+/* EMPTY */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--text-muted); }
+.empty-icon { font-size: 40px; margin-bottom: 10px; }
+/* BUTTONS */
+button { font-family: var(--font-body); cursor: pointer; border: none; transition: all 0.2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.btn-primary { background: var(--primary); color: #1a1400; font-weight: 800; padding: 11px 22px; border-radius: 10px; font-size: 14px; }
+.btn-primary:hover { background: #ffe033; transform: translateY(-1px); }
+.btn-secondary { background: var(--bg-surface); color: var(--text-main); font-weight: 700; padding: 10px 18px; border-radius: 10px; font-size: 13px; border: 1px solid var(--border); }
+.btn-secondary:hover { border-color: rgba(255,255,255,0.2); }
+.btn-danger { background: rgba(239,68,68,0.15); color: #f87171; font-weight: 700; padding: 8px 14px; border-radius: 8px; font-size: 12px; border: 1px solid rgba(239,68,68,0.2); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-group { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+.hidden { display: none !important; }
+/* FORM */
+.form-group { margin-bottom: 14px; }
+label { display: block; font-size: 11px; font-weight: 800; letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 6px; color: var(--text-muted); }
+input[type="text"], input[type="date"], textarea, select { width: 100%; padding: 11px 14px; background: rgba(37,42,66,0.8); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px; font-size: 14px; font-family: var(--font-body); color: var(--text-main); outline: none; transition: border-color 0.2s; box-sizing: border-box; -webkit-appearance: none; }
+input:focus, textarea:focus, select:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(255,215,0,0.12); }
+textarea { min-height: 120px; resize: vertical; }
+/* SECTION HEADER */
+.section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+.section-header h2 { font-family: var(--font-display); font-size: 19px; color: var(--text-main); }
+/* TOAST */
+.toast { position: fixed; bottom: 84px; right: 16px; background: var(--bg-card2); border: 1px solid var(--border); border-radius: 10px; padding: 11px 16px; font-size: 13px; font-weight: 600; z-index: 3000; box-shadow: 0 4px 20px rgba(0,0,0,0.4); animation: fadeSlideIn 0.3s ease; max-width: 260px; }
+.toast.success { border-color: rgba(74,222,128,0.4); color: #4ade80; }
+.toast.error { border-color: rgba(248,113,113,0.4); color: #f87171; }
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.88); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 16px; animation: fadeIn 0.2s ease; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+.modal-content { background: var(--bg-card); border: 1px solid var(--border); border-radius: 18px; max-width: 640px; width: 100%; max-height: 88vh; overflow-y: auto; animation: scaleIn 0.22s ease; position: relative; -webkit-overflow-scrolling: touch; }
+.modal-body { padding: 20px; }
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg-card); z-index: 5; border-radius: 18px 18px 0 0; }
+.modal-header-title { font-family: var(--font-display); font-size: 16px; }
+.modal-close-btn { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text-muted); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+/* FAB */
+.fab { position: fixed; bottom: 22px; right: 20px; width: 50px; height: 50px; border-radius: 50%; background: var(--primary); color: #1a1400; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(255,215,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 900; text-decoration: none; transition: all 0.2s; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.fab:hover, .fab:active { transform: scale(1.12); }
+.fab svg { width: 22px; height: 22px; fill: currentColor; }
+/* ANIMATIONS */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+/* SPINNER */
+.spinner { width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-row { display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 14px; padding: 20px; }
+/* RESPONSIVE */
+@media (max-width: 620px) {
+  body { padding-top: calc(var(--nav-h) + 18px); }
+  .navbar { padding: 0 10px; border-radius: 14px; top: 8px; width: calc(100% - 16px); }
+  .navbar-logo { font-size: 14px; }
+  .navbar-links { gap: 0; }
+  .navbar-links a { padding: 6px 6px; font-size: 11px; flex-direction: column; }
+  .navbar-links .nav-label { display: none; }
+  .navbar-links .nav-icon { font-size: 16px; }
+  .page-container { padding: 0 12px; }
+  .modal-overlay { padding: 10px; align-items: flex-end; }
+  .modal-content { border-radius: 18px 18px 0 0; max-height: 92vh; }
+}
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="navbar-logo">ぎ TKEHub</a>
+  <ul class="navbar-links">
+    <li><a href="index.html"><span class="nav-icon">👤</span><span class="nav-label"> Perfil</span></a></li>
+    <li><a href="torneos.html"><span class="nav-icon">🏆</span><span class="nav-label"> Torneos</span></a></li>
+    <li><a href="noticias.html"><span class="nav-icon">📢</span><span class="nav-label"> Anuncios</span></a></li>
+    <li><a href="desafios.html"><span class="nav-icon">🎯</span><span class="nav-label"> Desafíos</span></a></li>
+    <li><a href="ranking.html"><span class="nav-icon">🥇</span><span class="nav-label"> Ranking</span></a></li>
+    <li><a href="sorteos.html"><span class="nav-icon">🎲</span><span class="nav-label"> Sorteos</span></a></li>
+    <li><a href="admin-perfiles.html"><span class="nav-icon">🛡</span><span class="nav-label"> Admin</span></a></li>
+    <li><a href="changelogs.html"><span class="nav-icon">📋</span><span class="nav-label"> Changelog</span></a></li>
+  </ul>
+</nav>
+
+<div class="page-container">
+  <div class="page-header">
+    <h1>📋 Changelogs</h1>
+    <p>Historial de versiones, mejoras y correcciones de TKEHub.</p>
+  </div>
+
+  <div class="section-header">
+    <h2>Versiones</h2>
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+      <span id="adminBadge" class="hidden" style="font-size:11px;color:var(--primary);font-weight:700;">🛡 ADMIN</span>
+      <button class="btn-primary btn-sm hidden" id="btnAddChangelog">+ Nueva versión</button>
+      <button class="btn-secondary btn-sm hidden" id="adminLoginBtn">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <div id="changelogList">
+    <div class="loading-row"><div class="spinner"></div> Cargando changelogs...</div>
+  </div>
+  <div id="emptyChangelog" class="empty-state hidden">
+    <div class="empty-icon">📋</div>
+    <p>No hay changelogs publicados aún.</p>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// TKEHub — Changelogs Page
+// ═══════════════════════════════════════════════════════
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCwK1JjeABHh38j88cFpjTPmLWbUil9P1o",
+  authDomain: "tkehub-17984.firebaseapp.com",
+  projectId: "tkehub-17984",
+  storageBucket: "tkehub-17984.firebasestorage.app",
+  messagingSenderId: "592173972706",
+  appId: "1:592173972706:web:3a11ee92007e1959b1b2bb",
+  measurementId: "G-7V01C54F8S"
+};
+
+let db = null;
+function initFirebase() {
+  if (typeof firebase === 'undefined') { console.error('Firebase not loaded'); return; }
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+}
+
+const COL_CL = 'changelogs';
+
+async function fsGet(col, id) { const d = await db.collection(col).doc(id).get(); return d.exists ? {id:d.id,...d.data()} : null; }
+async function fsSet(col, id, data) { await db.collection(col).doc(id).set(data, {merge:true}); }
+async function fsAdd(col, data) { const r = await db.collection(col).add({...data, createdAt: firebase.firestore.FieldValue.serverTimestamp()}); return r.id; }
+async function fsDelete(col, id) { await db.collection(col).doc(id).delete(); }
+
+// ── SECURITY ───────────────────────────────────────────
+async function hashPassword(pass) {
+  const enc = new TextEncoder().encode(pass);
+  const buf = await crypto.subtle.digest('SHA-256', enc);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+const DEFAULT_ADMIN_PASS = 'admin123';
+let _cachedHash = null;
+async function getAdminHash() {
+  if (_cachedHash) return _cachedHash;
+  try {
+    const doc = await fsGet('settings', 'admin');
+    if (doc && doc.passHash) { _cachedHash = doc.passHash; return _cachedHash; }
+    if (doc && doc.password) { const h = await hashPassword(doc.password); await fsSet('settings','admin',{passHash:h}); _cachedHash=h; return h; }
+    _cachedHash = await hashPassword(DEFAULT_ADMIN_PASS); return _cachedHash;
+  } catch(e) { return await hashPassword(DEFAULT_ADMIN_PASS); }
+}
+function isAdmin() { return sessionStorage.getItem('tkehub_admin') === 'yes'; }
+
+// ── TOAST ──────────────────────────────────────────────
+function showToast(msg, type) {
+  type = type || 'success';
+  const ex = document.querySelector('.toast'); if (ex) ex.remove();
+  const t = document.createElement('div'); t.className = 'toast ' + type;
+  t.textContent = (type === 'success' ? '✓ ' : '✕ ') + msg;
+  document.body.appendChild(t);
+  setTimeout(() => { t.style.opacity='0'; t.style.transition='opacity 0.3s'; setTimeout(()=>t.remove(),300); }, 2800);
+}
+
+// ── MODAL ──────────────────────────────────────────────
+function openModal(buildFn) {
+  const overlay = document.createElement('div'); overlay.className = 'modal-overlay';
+  const content = document.createElement('div'); content.className = 'modal-content';
+  overlay.appendChild(content); document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  buildFn(overlay, content); return overlay;
+}
+function makeCloseBtn(overlay) {
+  const btn = document.createElement('button'); btn.className = 'modal-close-btn'; btn.textContent = '✕';
+  btn.addEventListener('click', () => overlay.remove()); return btn;
+}
+function makeModalHeader(overlay, title) {
+  const h = document.createElement('div'); h.className = 'modal-header';
+  const t = document.createElement('span'); t.className = 'modal-header-title'; t.textContent = title;
+  h.appendChild(t); h.appendChild(makeCloseBtn(overlay)); return h;
+}
+function safeConfirm(msg, onYes) {
+  openModal((overlay, content) => {
+    content.appendChild(makeModalHeader(overlay, '⚠️ Confirmar'));
+    const body = document.createElement('div'); body.className = 'modal-body';
+    const p = document.createElement('p'); p.style.cssText='font-size:14px;margin-bottom:20px;line-height:1.6;'; p.textContent = msg;
+    const btnRow = document.createElement('div'); btnRow.className = 'btn-group';
+    const btnNo = document.createElement('button'); btnNo.className='btn-secondary'; btnNo.textContent='Cancelar'; btnNo.addEventListener('click',()=>overlay.remove());
+    const btnYes = document.createElement('button'); btnYes.className='btn-danger'; btnYes.textContent='Confirmar'; btnYes.addEventListener('click',()=>{overlay.remove();onYes();});
+    btnRow.appendChild(btnNo); btnRow.appendChild(btnYes); body.appendChild(p); body.appendChild(btnRow); content.appendChild(body);
+  });
+}
+
+// ── AUTH ──────────────────────────────────────────────
+function requestAdminAccess(onSuccess) {
+  openModal(function(overlay, content) {
+    content.appendChild(makeModalHeader(overlay, '🔐 Acceso Administrador'));
+    const body = document.createElement('div'); body.className = 'modal-body';
+    const fg = document.createElement('div'); fg.className = 'form-group';
+    const lbl = document.createElement('label'); lbl.textContent = 'Contraseña';
+    const inp = document.createElement('input'); inp.type='password'; inp.placeholder='Contraseña de administrador'; inp.autocomplete='current-password'; inp.style.fontSize='16px';
+    fg.appendChild(lbl); fg.appendChild(inp); body.appendChild(fg);
+    const errMsg = document.createElement('p'); errMsg.style.cssText='color:#ff6b6b;font-size:12px;margin:0 0 10px;display:none;'; errMsg.textContent='Contraseña incorrecta.'; body.appendChild(errMsg);
+    const btnRow = document.createElement('div'); btnRow.className = 'btn-group';
+    const btnC = document.createElement('button'); btnC.className='btn-secondary'; btnC.textContent='Cancelar'; btnC.addEventListener('click',()=>overlay.remove());
+    const btnOK = document.createElement('button'); btnOK.className='btn-primary'; btnOK.textContent='Entrar';
+    async function tryLogin() {
+      if (!inp.value) { inp.focus(); return; }
+      btnOK.textContent='...'; btnOK.disabled=true;
+      try {
+        const inputHash = await hashPassword(inp.value);
+        const correctHash = await getAdminHash();
+        if (inputHash === correctHash) { sessionStorage.setItem('tkehub_admin','yes'); overlay.remove(); showToast('Acceso concedido','success'); if(onSuccess) onSuccess(); }
+        else { errMsg.style.display='block'; inp.value=''; inp.focus(); btnOK.textContent='Entrar'; btnOK.disabled=false; }
+      } catch(e) { errMsg.style.display='block'; btnOK.textContent='Entrar'; btnOK.disabled=false; }
+    }
+    btnOK.addEventListener('click', tryLogin); inp.addEventListener('keydown', e=>{if(e.key==='Enter')tryLogin();});
+    btnRow.appendChild(btnC); btnRow.appendChild(btnOK); body.appendChild(btnRow); content.appendChild(body);
+    setTimeout(()=>inp.focus(), 80);
+  });
+}
+function logoutAdmin() { sessionStorage.removeItem('tkehub_admin'); showToast('Sesión cerrada','success'); setTimeout(()=>location.reload(),700); }
+
+// ── NAV ───────────────────────────────────────────────
+function setActiveNav() {
+  const page = location.pathname.split('/').pop() || 'index.html';
+  document.querySelectorAll('.navbar-links a').forEach(a => { if (a.getAttribute('href') === page) a.classList.add('active'); });
+}
+function injectFAB() {
+  const fab = document.createElement('a'); fab.href='guia.html'; fab.className='fab'; fab.title='Guía TKEHub';
+  fab.innerHTML='<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><line x1="10" y1="7" x2="16" y2="7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="10" y1="11" x2="16" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+  document.body.appendChild(fab);
+}
+
+// ── CHANGELOGS ─────────────────────────────────────────
+const TAG_TYPES = ['new','fix','update','remove','security'];
+const TAG_LABELS = {new:'✨ Nuevo',fix:'🐛 Fix',update:'🔄 Actualización',remove:'🗑 Eliminado',security:'🔒 Seguridad'};
+
+function updateAdminUI() {
+  const admin = isAdmin();
+  document.getElementById('adminBadge').classList.toggle('hidden',!admin);
+  document.getElementById('btnAddChangelog').classList.toggle('hidden',!admin);
+  document.getElementById('adminLoginBtn').classList.toggle('hidden',!admin);
+}
+
+let _unsubCL = null;
+function startChangelogListener() {
+  if (_unsubCL) _unsubCL();
+  _unsubCL = db.collection(COL_CL).orderBy('createdAt','desc').onSnapshot(snap => {
+    const all = snap.docs.map(d => ({id:d.id,...d.data()}));
+    renderChangelogs(all);
+  }, err => console.error('cl listener:', err));
+}
+
+function renderChangelogs(all) {
+  const list = document.getElementById('changelogList');
+  const empty = document.getElementById('emptyChangelog');
+  list.innerHTML = '';
+  if (all.length === 0) { empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  all.forEach(cl => {
+    const entry = document.createElement('div'); entry.className = 'cl-entry';
+    const ver = document.createElement('div'); ver.className = 'cl-version'; ver.textContent = cl.version || 'v?.?';
+    const date = document.createElement('div'); date.className = 'cl-date'; date.textContent = cl.fecha || '';
+    const tags = document.createElement('div'); tags.className = 'cl-tags';
+    (cl.tags||[]).forEach(t => { const s=document.createElement('span');s.className='cl-tag '+t;s.textContent=TAG_LABELS[t]||t;tags.appendChild(s); });
+    const desc = document.createElement('div'); desc.className = 'cl-desc'; desc.textContent = cl.descripcion || '';
+    entry.appendChild(ver); entry.appendChild(date);
+    if((cl.tags||[]).length>0) entry.appendChild(tags);
+    entry.appendChild(desc);
+    if(isAdmin()){
+      const ab=document.createElement('div'); ab.style.cssText='display:flex;gap:6px;margin-top:10px;';
+      const btnE=document.createElement('button'); btnE.className='btn-secondary btn-sm'; btnE.textContent='✏️ Editar';
+      btnE.addEventListener('click',()=>openEditCLModal(cl));
+      const btnD=document.createElement('button'); btnD.className='btn-danger btn-sm'; btnD.textContent='🗑';
+      btnD.addEventListener('click',()=>safeConfirm('¿Eliminar esta versión?',async()=>{await fsDelete(COL_CL,cl.id);showToast('Eliminado');}));
+      ab.appendChild(btnE); ab.appendChild(btnD); entry.appendChild(ab);
+    }
+    list.appendChild(entry);
+  });
+}
+
+function openAddCLModal() { openEditCLModal(null); }
+
+function openEditCLModal(cl) {
+  openModal((overlay, content) => {
+    content.appendChild(makeModalHeader(overlay, cl ? '✏️ Editar versión' : '+ Nueva versión'));
+    const body = document.createElement('div'); body.className = 'modal-body';
+    body.innerHTML = `
+      <div class="form-group"><label>Versión (ej: v3.1)</label><input type="text" id="cl_version" value="${cl?.version||''}" placeholder="v1.0"></div>
+      <div class="form-group"><label>Fecha</label><input type="date" id="cl_fecha" value="${cl?.fecha||new Date().toISOString().slice(0,10)}"></div>
+      <div class="form-group"><label>Tipos de cambio</label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;" id="cl_tags_wrap">
+          ${TAG_TYPES.map(t=>`<label style="display:flex;align-items:center;gap:5px;cursor:pointer;font-size:12px;font-weight:700;text-transform:none;letter-spacing:0;"><input type="checkbox" value="${t}" ${(cl?.tags||[]).includes(t)?'checked':''} style="accent-color:var(--primary);width:auto;"> ${TAG_LABELS[t]}</label>`).join('')}
+        </div>
+      </div>
+      <div class="form-group"><label>Descripción de cambios *</label><textarea id="cl_desc" placeholder="Describe los cambios de esta versión...">${cl?.descripcion||''}</textarea></div>`;
+    const btnRow = document.createElement('div'); btnRow.className = 'btn-group';
+    const btnC = document.createElement('button'); btnC.className='btn-secondary'; btnC.textContent='Cancelar'; btnC.addEventListener('click',()=>overlay.remove());
+    const btnS = document.createElement('button'); btnS.className='btn-primary'; btnS.textContent='💾 Guardar';
+    btnS.addEventListener('click', async () => {
+      const version = document.getElementById('cl_version').value.trim();
+      const fecha = document.getElementById('cl_fecha').value;
+      const descripcion = document.getElementById('cl_desc').value.trim();
+      const tags = [...document.querySelectorAll('#cl_tags_wrap input:checked')].map(i=>i.value);
+      if (!version || !descripcion) { showToast('Versión y descripción obligatorias','error'); return; }
+      btnS.textContent='Guardando...'; btnS.disabled=true;
+      try {
+        const data = {version, fecha, descripcion, tags};
+        if (cl) { await db.collection(COL_CL).doc(cl.id).set(data,{merge:true}); }
+        else { await fsAdd(COL_CL, data); }
+        overlay.remove(); showToast(cl?'Versión actualizada':'Versión publicada');
+      } catch(err) { showToast('Error: '+err.message,'error'); btnS.textContent='💾 Guardar'; btnS.disabled=false; }
+    });
+    btnRow.appendChild(btnC); btnRow.appendChild(btnS); body.appendChild(btnRow); content.appendChild(body);
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initFirebase(); setActiveNav(); injectFAB();
+  updateAdminUI();
+  startChangelogListener();
+  document.getElementById('btnAddChangelog').addEventListener('click', openAddCLModal);
+  document.getElementById('adminLoginBtn').addEventListener('click', logoutAdmin);
+  // Navbar admin shortcut
+  const navLink = document.getElementById('navAdminLink');
+  if (navLink) navLink.addEventListener('click', e => {
+    if (isAdmin()) return;
+    const page = location.pathname.split('/').pop()||'index.html';
+    if (page === 'admin-perfiles.html') return;
+    e.preventDefault();
+    requestAdminAccess(() => { updateAdminUI(); showToast('Admin activo','success'); });
+  });
+});
+</script>
+</body>
+</html>
